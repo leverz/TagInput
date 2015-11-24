@@ -3,3 +3,18 @@
 它是一个标签生成器，输入文字敲击回车，生成标签，输入框清空。
 点击'X'删除标签。
 标签出现在输入框的下一行。
+* Update by Lever on 2015/11/24.*
+ * 使用说明:
+ *页面中需要制定
+ *       <input ng-model="selected" add-tag="Array"/>
+ *       <div id="tag-container></div>
+ *
+ * 回车后确认输入，标签显示在tag-container中。
+
+*更新说明：*
+  改进之后，加入了预判断，判读是否之前有数据；使用keypress代替keydown做事件触发。
+  之前使用keydown时，经常会出现回车之后input中输入内容不消失，而且keydown会经常跟别的组件(如：bootstrap-typeahead)发生冲突，效果总是不好。
+  查阅相关资料，了解到keypress适合用来处理文本输入，而keydown和keyup适合用来处理快捷键。
+
+  后续将要进行的改进：
+  增强可扩展性，使组件更加通用化，用起来更加方便简洁。
