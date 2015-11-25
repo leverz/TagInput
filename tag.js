@@ -15,7 +15,11 @@
  *
  * 后续将要进行的改进：
  * 增强可扩展性，使组件更加通用化，用起来更加方便简洁。
+ *
+ * Update by Lever on 2015/11/25.
+ * 修改删除tag操作，之前使用pop函数导致只有在从尾部删除时是正确的，现在采用splice应对随意删除的情况。
  */
+
     app.directive('addTag',function(){
         return{
             restrict: 'A',
@@ -29,7 +33,11 @@
                         $("#tag-container").append('<span class="tag label label-info" style="display:inline-block;width:auto;margin: 5px;background-color: #F09E84;line-height: 2em;"><span class="deptTag">'+scope.tags[key]+'</span><span style="margin-left: 10px;cursor: pointer;" class="remove-tag"><i class="fa fa-times"></i></span></span>');
                     }
                     $('.remove-tag').bind('click',function(){
-                        scope.tags.pop($(this).prev('.deptTag').text());
+                        var removeTx = $(this).prev('.deptTag').text();
+                        var removeIndex = $.inArray(removeTx,scope.tags);
+                        if(removeIndex >= 0){
+                            scope.tags.splice(removeIndex,1);
+                        }
                         $(this).parent().remove();
                     })
                 }else{
@@ -38,13 +46,17 @@
                 element.bind('keypress',function(event){
                     if(event.keyCode == 13){
                         if(scope.selected && scope.selected !== ""){
-                            $("#tag-container").append('<span class="tag label label-info" style="display:inline-block;width:auto;margin: 5px;background-color: #F09E84;line-height: 2em;">'+scope.selected+'<span style="margin-left: 10px;cursor: pointer;" class="remove-tag"><i class="icon-icon_close"></i></span></span>');
+                            $("#tag-container").append('<span class="tag label label-info" style="display:inline-block;width:auto;margin: 5px;background-color: #F09E84;line-height: 2em;"><span class="deptTag">'+scope.selected+'</span><span style="margin-left: 10px;cursor: pointer;" class="remove-tag"><i class="icon-icon_close"></i></span></span>');
                             scope.tags.push(scope.selected);
                             scope.selected = "";
                             scope.$apply();
                         }
                         $('.remove-tag').bind('click',function(){
-                            scope.tags.pop($(this).prev('.deptTag').text());
+                            var removeTx = $(this).prev('.deptTag').text();
+                            var removeIndex = $.inArray(removeTx,scope.tags);
+                            if(removeIndex >= 0){
+                                scope.tags.splice(removeIndex,1);
+                            }
                             $(this).parent().remove();
                         })
                     }
